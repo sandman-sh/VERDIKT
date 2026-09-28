@@ -1,0 +1,378 @@
+openapi: 3.1.0
+info:
+  title: Verdikt Evaluation API
+  version: 2.6.0
+  description: Official OpenAPI 3.1 specification for Verdikt — autonomous submission and evaluation platform.
+servers:
+  - url: http://localhost:8080
+    description: Local self-hosted portal
+
+paths:
+  /api/projects:
+    get:
+      summary: Retrieve project gallery
+      description: Returns all submissions with raw and Bayesian normalized scores, track information, and community vote counts.
+      responses:
+        '200':
+          description: List of projects with normalization metrics
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  projects:
+                    type: array
+                    items:
+                      type: object
+                  stats:
+                    type: object
+
+  /projects/new:
+    post:
+      summary: Submit a project
+      description: Creates a new submission. Refuses with HTTP 403 when the event deadline has passed.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - title
+              properties:
+                title:
+                  type: string
+                summary:
+                  type: string
+                track_id:
+                  type: string
+                repo_url:
+                  type: string
+      responses:
+        '200':
+          description: Project created successfully
+        '403':
+          description: Submission deadline passed
+
+  /api/judge/scores:
+    get:
+      summary: Retrieve judge scores
+      description: Returns the authenticated judge's own submitted evaluations. Visiting a peer's scores returns HTTP 403 Forbidden.
+      parameters:
+        - name: judge
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Array of scores submitted by caller
+        '401':
+          description: Missing or invalid authentication
+        '403':
+          description: Forbidden (cannot view peer scores or caller is participant)
+
+    post:
+      summary: Submit evaluation
+      description: Saves weighted multi-criteria score for a project.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - project_id
+                - criteria
+              properties:
+                project_id:
+                  type: string
+                criteria:
+                  type: object
+                comment:
+                  type: string
+      responses:
+        '200':
+          description: Score recorded and audit log updated
+        '403':
+          description: Caller is not a judge
+
+  /api/judge/pairwise:
+    get:
+      summary: Get random pairwise matchup
+      description: Returns two candidate projects for Gavel-style comparative judging.
+      responses:
+        '200':
+          description: Project pair
+    post:
+      summary: Record pairwise preference
+      description: Records which project won the matchup and updates Bradley-Terry likelihoods.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - project_a_id
+                - project_b_id
+                - winner_id
+      responses:
+        '200':
+          description: Comparison recorded
+
+  /api/export.csv:
+    get:
+      summary: Export results as CSV
+      description: Streams calibrated hackathon results in standard CSV format. Restricted to organizers.
+      responses:
+        '200':
+          description: CSV file streaming
+          content:
+            text/csv:
+              schema:
+                type: string
+        '403':
+          description: Forbidden for non-organizers
+
+  /api/projects/{id}/comments:
+    get:
+      summary: List project comments
+      description: Returns all discussion and feedback comments for a project.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Array of comments
+    post:
+      summary: Add comment to project
+      description: Posts feedback or questions on a project.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - content
+              properties:
+                content:
+                  type: string
+                author_name:
+                  type: string
+                author_role:
+                  type: string
+      responses:
+        '201':
+          description: Comment created
+
+  /api/projects/{id}/quadratic-vote:
+    post:
+      summary: Cast quadratic votes
+      description: Allocates voice credits (1, 4, 9, 16, or 25) with square-root influence.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - credits
+              properties:
+                credits:
+                  type: integer
+                  enum: [1, 4, 9, 16, 25]
+      responses:
+        '200':
+          description: Quadratic vote recorded
+
+  /api/teams/invite:
+    post:
+      summary: Create team invite code
+      description: Generates an 8-character invitation token for team co-creators.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                team_id:
+                  type: string
+                team_name:
+                  type: string
+      responses:
+        '201':
+          description: Invite code generated
+
+  /api/teams/join:
+    post:
+      summary: Join team via invite code
+      description: Joins an existing team using the 8-character code.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - invite_code
+              properties:
+                invite_code:
+                  type: string
+                email:
+                  type: string
+      responses:
+        '200':
+          description: Successfully joined team
+
+  /api/organizer/auto-assign:
+    post:
+      summary: Algorithmic judge assignment
+      description: Assigns judges to projects matching track expertise and evening out review workloads.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reviews_per_project:
+                  type: integer
+      responses:
+        '200':
+          description: Assignments successfully generated
+        '403':
+          description: Organizer role required
+
+  /api/organizer/visibility:
+    get:
+      summary: Check results visibility
+      description: Returns whether results are published or blinded.
+      responses:
+        '200':
+          description: Status of results publication
+    post:
+      summary: Set results visibility
+      description: Toggles results between public and blinded.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - published
+              properties:
+                published:
+                  type: boolean
+      responses:
+        '200':
+          description: Visibility updated
+        '403':
+          description: Organizer role required
+
+  /api/webhooks:
+    get:
+      summary: List registered webhooks
+      description: Returns all configured event webhooks.
+      responses:
+        '200':
+          description: List of webhooks
+        '403':
+          description: Organizer role required
+    post:
+      summary: Register webhook
+      description: Configures an HTTP endpoint to receive event payloads.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - url
+              properties:
+                url:
+                  type: string
+                event_types:
+                  type: string
+                secret:
+                  type: string
+      responses:
+        '201':
+          description: Webhook registered
+        '403':
+          description: Organizer role required
+
+  /api/certificates/judge:
+    post:
+      summary: Issue verifiable participation certificate
+      description: Generates an HMAC-SHA256 cryptographically verifiable certificate for a judge.
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                judge_id:
+                  type: string
+      responses:
+        '201':
+          description: Certificate record generated
+
+  /verify/{record_id}:
+    get:
+      summary: Verify certificate
+      description: Publicly verifies a cryptographic certificate record.
+      parameters:
+        - name: record_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Cryptographic record verified
+        '404':
+          description: Record not found
+
+  /api/export/bulk.json:
+    get:
+      summary: Full database export
+      description: Exports the entire relational dataset as a JSON backup.
+      responses:
+        '200':
+          description: Bulk database JSON
+        '403':
+          description: Organizer role required
+
+  /embed/gallery:
+    get:
+      summary: Embeddable project gallery widget
+      description: Self-contained, responsive HTML widget suitable for sponsor and partner embedding.
+      responses:
+        '200':
+          description: HTML document ready for iframe embed
+          content:
+            text/html:
+              schema:
+                type: string
+

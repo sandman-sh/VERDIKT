@@ -1,0 +1,12 @@
+services:
+  portal:
+    build: .
+    container_name: verdikt-portal
+    ports:
+      - "8080:8080"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8080
+      - DB_PATH=/app/dogfood.db
+      - FIXTURES_PATH=/app/fixtures.json
+    restart: unless-stopped

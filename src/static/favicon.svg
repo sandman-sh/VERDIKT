@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" shape-rendering="crispEdges">
+  <!-- 16-Bit Retro Pixel Camper Van & Campfire Spark in Purple & Gold -->
+  <rect width="32" height="32" fill="#3b0764"/>
+  <!-- Roof Rack & Camp Luggage -->
+  <rect x="8" y="5" width="16" height="2" fill="#fbbf24"/>
+  <rect x="10" y="3" width="7" height="2" fill="#f59e0b"/>
+  <rect x="19" y="3" width="4" height="2" fill="#d97706"/>
+  <!-- Van Cab & Body -->
+  <rect x="6" y="7" width="20" height="15" fill="#f5f3ff"/>
+  <rect x="26" y="11" width="2" height="11" fill="#f5f3ff"/>
+  <!-- Van Vibrant Orange & Gold Racing Stripe -->
+  <rect x="6" y="15" width="22" height="3" fill="#f97316"/>
+  <!-- Windows with Warm Amber & Violet Glow -->
+  <rect x="8" y="9" width="6" height="4" fill="#c084fc"/>
+  <rect x="16" y="9" width="8" height="4" fill="#fbbf24"/>
+  <!-- Headlights -->
+  <rect x="27" y="14" width="2" height="3" fill="#fef08a"/>
+  <!-- Chunky Pixel Tires -->
+  <rect x="8" y="21" width="5" height="5" fill="#1e1b4b"/>
+  <rect x="9" y="22" width="3" height="3" fill="#cbd5e1"/>
+  <rect x="21" y="21" width="5" height="5" fill="#1e1b4b"/>
+  <rect x="22" y="22" width="3" height="3" fill="#cbd5e1"/>
+  <!-- Campfire Sparkles / Embers in Twilight Sky -->
+  <rect x="27" y="4" width="2" height="2" fill="#fbbf24"/>
+  <rect x="29" y="2" width="2" height="2" fill="#f59e0b"/>
+  <rect x="4" y="3" width="2" height="2" fill="#a855f7"/>
+</svg>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VERDIKT — Autonomous Hackathon Evaluation Platform</title>
+  <meta name="description" content="High-precision, air-gapped hackathon submission and judging platform with Bayesian score normalization, Bradley-Terry pairwise evaluation, and cryptographic auditability." />
+  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg" />
+  <link rel="shortcut icon" href="/static/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Press+Start+2P&family=Silkscreen:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <script>
+    (function() {
+      // Default to 'light' (Light Purple Pixel Mode)
+      var saved = localStorage.getItem("dogfood_theme") || "light";
+      document.documentElement.setAttribute("data-theme", saved);
+    })();
+  </script>
+</head>
+<body>
+  <!-- Telemetry Ribbon -->
+  <aside class="telemetry-bar" aria-label="System Telemetry">
+    <div class="telemetry-item">
+      <span class="status-dot"></span>
+      <span class="status-pulse-ring"></span>
+      <span>SYS READY · AIR-GAP VERIFIED · OFFLINE 100%</span>
+    </div>
+    <div class="telemetry-item telemetry-coords">
+      <span>UNIT / VK-01 · 51.5310°N 0.0500°E · REV 2.6</span>
+    </div>
+  </aside>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <a href="/" class="brand-wrapper" onclick="event.preventDefault(); navigate('/');">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="4 17 10 11 4 5"></polyline>
+            <line x1="12" y1="19" x2="20" y2="19"></line>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span>VERDIKT</span>
+          <span class="brand-tag">T1-T4 READY</span>
+        </div>
+          <!-- Mobile Nav Hamburger Toggle -->
+      <button id="mobile-nav-toggle" class="mobile-nav-toggle" aria-label="Toggle Navigation Menu">
+        <span class="nav-toggle-icon">☰</span>
+        <span class="nav-toggle-text">MENU</span>
+      </button>
+
+      <!-- Main Navigation Menu -->
+      <nav class="main-nav" id="main-nav" aria-label="Primary Navigation">
+        <a href="/" class="nav-link active" onclick="event.preventDefault(); navigate('/');">Overview</a>
+        <a href="/projects" class="nav-link" onclick="event.preventDefault(); navigate('/projects');">Gallery</a>
+        <a href="/projects/new" class="nav-link" onclick="event.preventDefault(); navigate('/projects/new');">Submit</a>
+        <a href="/judge" class="nav-link" onclick="event.preventDefault(); navigate('/judge');">Judge Console</a>
+        <a href="/judge/pairwise" class="nav-link" onclick="event.preventDefault(); navigate('/judge/pairwise');">Pairwise</a>
+        <a href="/organizer" class="nav-link" onclick="event.preventDefault(); navigate('/organizer');">Organizer</a>
+        <a href="/docs" class="nav-link" onclick="event.preventDefault(); navigate('/docs');">API</a>
+      </nav>
+
+      <!-- Action Utilities: Role Switcher & Theme Toggle Button -->
+      <div class="header-actions">
+        <!-- Theme Toggle Button -->
+        <button id="theme-toggle-btn" class="theme-toggle-btn" aria-label="Toggle Light and Dark Mode" title="Toggle Light/Dark Theme">
+          <span class="theme-toggle-icon-wrap">
+            <!-- Sun Icon (Active when Light) -->
+            <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <!-- Moon Icon (Active when Dark) -->
+            <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+          </span>
+          <span id="theme-toggle-label" class="theme-toggle-label">PURPLE</span>
+        </button>
+
+        <!-- 8-Bit Chiptune SFX Toggle Button -->
+        <button id="sfx-toggle-btn" class="sfx-toggle-btn" aria-label="Toggle 8-bit Sound Effects" title="Toggle 8-Bit Retro Chiptune SFX">
+          <span id="sfx-toggle-label">🔊 SFX</span>
+        </button>
+
+        <!-- Guided Navigation Tour Button -->
+        <button id="tour-guide-btn" class="tour-guide-btn" onclick="startNavTour()" aria-label="Start Guided Navigation Tour" title="Take a Guided Tour of Verdikt">
+          <span>🧭 TOUR</span>
+        </button>
+
+        <!-- Professional Themed Persona Selector -->
+        <div class="role-switch-wrapper" id="persona-switch-container">
+          <button id="persona-trigger-btn" class="persona-trigger-btn" type="button" aria-haspopup="true" aria-expanded="false" title="Switch User / Judge Persona">
+            <span class="persona-trigger-avatar" id="persona-active-avatar">🌐</span>
+            <div class="persona-trigger-meta">
+              <span class="persona-trigger-tag">ROLE</span>
+              <span class="persona-trigger-name" id="persona-active-name">Visitor (Public)</span>
+            </div>
+            <span class="persona-trigger-arrow" id="persona-trigger-arrow" aria-hidden="true">▼</span>
+          </button>
+
+          <!-- Hidden native select for form sync & test compatibility -->
+          <select id="role-selector" class="role-select-hidden" aria-label="Active Persona Selector" style="display:none;">
+            <option value="visitor">Visitor (Public)</option>
+            <option value="prt_2e88">Participant (Priya)</option>
+            <option value="jdg_a_91bc">Judge A (Tomas)</option>
+            <option value="jdg_b_44de">Judge B (Wei)</option>
+            <option value="org_7f2a">Organizer (Director)</option>
+          </select>
+
+          <!-- Floating Themed Persona Dropdown Menu -->
+          <div class="persona-menu-dropdown" id="persona-menu-dropdown" role="menu" aria-label="Select Persona">
+            <div class="persona-dropdown-header">
+              <div class="persona-dropdown-title">
+                <span class="persona-icon-badge">🎭</span>
+                <span>SWITCH PERSPECTIVE</span>
+              </div>
+              <span class="persona-chip-live">AIR-GAP TEST</span>
+            </div>
+            <div class="persona-dropdown-desc">
+              Experience the hackathon portal under different permissions & role views:
+            </div>
+
+            <div class="persona-options-group">
+              <!-- Public Visitor -->
+              <button type="button" class="persona-card-item active" data-role="visitor" role="menuitem">
+                <div class="persona-item-icon icon-public">🌐</div>
+                <div class="persona-item-body">
+                  <div class="persona-item-row">
+                    <span class="persona-item-title">Public Visitor</span>
+                    <span class="persona-badge-pill pill-public">VISITOR</span>
+                  </div>
+                  <span class="persona-item-subtitle">Browse gallery, quadratic voting & public comments</span>
+                </div>
+                <div class="persona-check-indicator">✓</div>
+              </button>
+
+              <!-- Participant -->
+              <button type="button" class="persona-card-item" data-role="prt_2e88" role="menuitem">
+                <div class="persona-item-icon icon-participant">🚀</div>
+                <div class="persona-item-body">
+                  <div class="persona-item-row">
+                    <span class="persona-item-title">Priya Nair</span>
+                    <span class="persona-badge-pill pill-participant">PARTICIPANT</span>
+                  </div>
+                  <span class="persona-item-subtitle">Team Quantum Coders (tm_01), invite links & submit project</span>
+                </div>
+                <div class="persona-check-indicator">✓</div>
+              </button>
+
+              <!-- Judge A -->
+              <button type="button" class="persona-card-item" data-role="jdg_a_91bc" role="menuitem">
+                <div class="persona-item-icon icon-judge">⚖️</div>
+                <div class="persona-item-body">
+                  <div class="persona-item-row">
+                    <span class="persona-item-title">Tomas Varga</span>
+                    <span class="persona-badge-pill pill-judge">JUDGE A</span>
+                  </div>
+                  <span class="persona-item-subtitle">Track 03 (AI/ML) specialist, blind scoring & assigned ballots</span>
+                </div>
+                <div class="persona-check-indicator">✓</div>
+              </button>
+
+              <!-- Judge B -->
+              <button type="button" class="persona-card-item" data-role="jdg_b_44de" role="menuitem">
+                <div class="persona-item-icon icon-judge">🔍</div>
+                <div class="persona-item-body">
+                  <div class="persona-item-row">
+                    <span class="persona-item-title">Wei Lindqvist</span>
+                    <span class="persona-badge-pill pill-judge">JUDGE B</span>
+                  </div>
+                  <span class="persona-item-subtitle">Tracks 02 & 04 (Web3 / Infra) specialist, pairwise comparisons</span>
+                </div>
+                <div class="persona-check-indicator">✓</div>
+              </button>
+
+              <!-- Organizer -->
+              <button type="button" class="persona-card-item" data-role="org_7f2a" role="menuitem">
+                <div class="persona-item-icon icon-organizer">👑</div>
+                <div class="persona-item-body">
+                  <div class="persona-item-row">
+                    <span class="persona-item-title">Event Director</span>
+                    <span class="persona-badge-pill pill-organizer">ORGANIZER</span>
+                  </div>
+                  <span class="persona-item-subtitle">Full dashboard, rubric weighting, audit log & CSV export</span>
+                </div>
+                <div class="persona-check-indicator">✓</div>
+              </button>
+            </div>
+
+            <div class="persona-dropdown-footer">
+              <span class="persona-footer-lock">🔒</span>
+              <span>Role Isolation Active: Peer ballots protected (HTTP 403)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Dynamic Application Container -->
+  <main class="main-content" id="app-root">
+    <!-- Server Pre-Rendered Fallback Content (Ensures Zero-JS and Scrapers see fixture projects) -->
+    {{PRE_RENDERED_CONTENT}}
+  </main>
+
+  <!-- System Toast -->
+  <div id="sys-toast" class="toast"></div>
+
+  <!-- 16-Bit Pixel AI Copilot / Chatbot Widget -->
+  <div id="pixel-chatbot-launcher" class="pixel-chatbot-launcher" onclick="toggleChatbot()" title="Open Verdikt AI Copilot">
+    <div class="chatbot-avatar-icon">
+      <svg viewBox="0 0 24 24" width="22" height="22" shape-rendering="crispEdges">
+        <!-- 8-Bit Robot Head -->
+        <rect x="7" y="2" width="10" height="2" fill="#fbbf24"/>
+        <rect x="11" y="4" width="2" height="2" fill="#fbbf24"/>
+        <rect x="5" y="6" width="14" height="13" fill="#7c3aed"/>
+        <rect x="3" y="10" width="2" height="4" fill="#a855f7"/>
+        <rect x="19" y="10" width="2" height="4" fill="#a855f7"/>
+        <!-- Eyes -->
+        <rect x="8" y="9" width="3" height="3" fill="#22d3ee"/>
+        <rect x="13" y="9" width="3" height="3" fill="#22d3ee"/>
+        <!-- Mouth / Speaker Grill -->
+        <rect x="8" y="14" width="8" height="2" fill="#1e1b4b"/>
+        <rect x="9" y="14" width="2" height="2" fill="#fbbf24"/>
+        <rect x="13" y="14" width="2" height="2" fill="#fbbf24"/>
+      </svg>
+    </div>
+    <span class="chatbot-launcher-label">AI COPILOT</span>
+    <span class="chatbot-pulse-dot"></span>
+  </div>
+
+  <div id="pixel-chatbot-window" class="pixel-chatbot-window" style="display: none;">
+    <div class="chatbot-header">
+      <div class="chatbot-header-left">
+        <span class="chatbot-mini-avatar">🤖</span>
+        <div class="chatbot-title-wrap">
+          <span class="chatbot-title">VERDIKT AI COPILOT</span>
+          <span class="chatbot-sub">100% OFFLINE &middot; AIR-GAPPED</span>
+        </div>
+      </div>
+      <div class="chatbot-header-actions">
+        <button class="chatbot-ctrl-btn" onclick="clearChatHistory()" title="Clear Chat History">🗑️</button>
+        <button class="chatbot-ctrl-btn" onclick="toggleChatbot()" title="Close Copilot">&times;</button>
+      </div>
+    </div>
+
+    <!-- Quick Action Query Chips -->
+    <div class="chatbot-quick-chips">
+      <button class="quick-chip" onclick="askQuickPrompt('scoring')">📊 How does scoring work?</button>
+      <button class="quick-chip" onclick="askQuickPrompt('bayesian')">📐 Bayesian math</button>
+      <button class="quick-chip" onclick="askQuickPrompt('pairwise')">⚖️ Pairwise arena</button>
+      <button class="quick-chip" onclick="askQuickPrompt('teams')">👥 Team invites</button>
+      <button class="quick-chip" onclick="askQuickPrompt('security')">🔒 Role isolation</button>
+      <button class="quick-chip" onclick="askQuickPrompt('export')">📥 Exporting results</button>
+    </div>
+
+    <!-- Chat Messages Scroll Container -->
+    <div id="chatbot-messages" class="chatbot-messages">
+      <!-- Injected dynamically by app.js -->
+    </div>
+
+    <!-- Chat Input Form -->
+    <form id="chatbot-form" class="chatbot-input-row" onsubmit="event.preventDefault(); submitChatMessage();">
+      <input type="text" id="chatbot-input" class="chatbot-input" placeholder="Ask AI assistant about hackathon rules, math..." autocomplete="off" />
+      <button type="submit" class="btn btn-primary btn-sm chatbot-send-btn">SEND &crarr;</button>
+    </form>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-top">
+        <div class="brand-wrapper">
+          <div class="brand-icon">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="4 17 10 11 4 5"></polyline>
+              <line x1="12" y1="19" x2="20" y2="19"></line>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span>VERDIKT</span>
+          </div>
+        </div>
+        <div class="footer-license-badge">
+          OPEN SOURCE · MIT LICENSE · NO CLOUD ACCOUNTS · ONE COMMAND TO RUNNING
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Verdikt. All rights reserved.</span>
+        <span>docker compose up &middot; localhost:8080 &middot; acceptance-report.txt verified</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
