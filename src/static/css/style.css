@@ -204,6 +204,16 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.25;
   letter-spacing: 0.01em;
   font-weight: 700;
+  color: var(--text-primary);
+}
+
+code, kbd, samp {
+  font-family: var(--font-mono);
+  background: var(--bg-surface-2);
+  color: var(--text-primary);
+  padding: 0.15rem 0.35rem;
+  border: 1px solid var(--border-subtle);
+  font-size: 0.9em;
 }
 
 p, span, div, label {
@@ -1540,6 +1550,11 @@ html[data-theme="dark"] .theme-icon-moon { opacity: 1; color: var(--accent-cyan)
   box-shadow: 2px 2px 0px var(--accent-purple);
 }
 
+.form-select option {
+  background: var(--bg-surface-1);
+  color: var(--text-primary);
+}
+
 .form-textarea {
   min-height: 110px;
   resize: vertical;
@@ -1636,24 +1651,64 @@ input[type="range"].form-input::-webkit-slider-thumb {
   text-align: left;
 }
 
+.data-table thead {
+  background: var(--bg-surface-2);
+}
+
 .data-table th {
-  background: var(--bg-surface-0);
-  padding: 0.75rem 0.85rem;
+  background: var(--bg-surface-2);
+  padding: 0.85rem 1rem;
   font-family: var(--font-pixel-ui);
-  font-size: 0.72rem;
-  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-primary);
   text-transform: uppercase;
-  border-bottom: 2px solid var(--border-strong);
+  letter-spacing: 0.04em;
+  border-bottom: 3px solid var(--border-strong);
+  border-right: 1px solid var(--border-subtle);
+  white-space: nowrap;
+}
+
+.data-table th:last-child {
+  border-right: none;
+}
+
+.data-table tbody tr {
+  background: var(--bg-surface-1);
+  transition: background var(--transition-fast);
+}
+
+.data-table tbody tr:nth-child(even) {
+  background: var(--bg-surface-0);
 }
 
 .data-table td {
-  padding: 0.75rem 0.85rem;
+  padding: 0.8rem 1rem;
   border-bottom: 1px solid var(--border-subtle);
-  color: var(--text-secondary);
+  border-right: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  font-family: var(--font-pixel-body);
+  font-size: 1.05rem;
+  vertical-align: middle;
+}
+
+.data-table td:last-child {
+  border-right: none;
 }
 
 .data-table tr:hover td {
   background: var(--bg-surface-2);
+  color: var(--text-primary);
+}
+
+/* Fallback generic table styles */
+table {
+  color: var(--text-primary);
+}
+th {
+  color: var(--text-primary);
+}
+td {
   color: var(--text-primary);
 }
 

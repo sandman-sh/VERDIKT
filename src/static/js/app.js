@@ -156,7 +156,7 @@ function playChiptuneMelody() {
 // Interactive Marshmallow Roasting Game State
 let marshmallowLevel = 1;
 const MARSHMALLOW_LEVELS = [
-  { name: "RAW & SWEET", desc: "Just skewered on stick!", color: "#ffffff" },
+  { name: "RAW & SWEET", desc: "Just skewered on stick!", color: "var(--text-primary)" },
   { name: "LIGHTLY WARMED", desc: "Warm and gooey inside!", color: "#fef08a" },
   { name: "GOLDEN BROWN", desc: "Perfect campfire roast (+50 EXP)!", color: "#f59e0b" },
   { name: "CRISPY CARAMEL", desc: "Chef's kiss! Deliciously crunchy!", color: "#d97706" },
@@ -1265,7 +1265,7 @@ async function renderJudge(container) {
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
       <!-- Evaluation Form -->
       <div class="form-card" style="margin: 0;">
-        <h3 style="margin-bottom: 1.5rem; font-size: 1.15rem; color: #fff;">Score a Project</h3>
+        <h3 style="margin-bottom: 1.5rem; font-size: 1.15rem; color: var(--text-primary);">Score a Project</h3>
         <form id="score-form" onsubmit="event.preventDefault(); submitScoreHandler();">
           <div class="form-group">
             <label class="form-label">Select Project</label>
@@ -1320,7 +1320,7 @@ async function renderJudge(container) {
 
       <!-- Scored Projects History -->
       <div>
-        <h3 style="margin-bottom: 1rem; font-size: 1.15rem; color: #fff;">Your Submitted Evaluations (${judgeScores.length})</h3>
+        <h3 style="margin-bottom: 1rem; font-size: 1.15rem; color: var(--text-primary);">Your Submitted Evaluations (${judgeScores.length})</h3>
         <div class="data-table-container">
           <table class="data-table">
             <thead>
@@ -1334,7 +1334,7 @@ async function renderJudge(container) {
             <tbody>
               ${judgeScores.length > 0 ? judgeScores.map(s => `
                 <tr>
-                  <td style="font-weight: 600; color: #fff;">${s.project_title}</td>
+                  <td style="font-weight: 600; color: var(--text-primary);">${s.project_title}</td>
                   <td>${s.track}</td>
                   <td style="font-family: var(--font-mono);">${s.criteria.functionality || '-'} / ${s.criteria.quality || '-'} / ${s.criteria.innovation || '-'}</td>
                   <td>${s.comment || '<span style="color:var(--text-muted)">None</span>'}</td>
@@ -1465,7 +1465,7 @@ async function renderPairwise(container) {
     </div>
 
     <div style="max-width: 860px; margin: 0 auto 2.5rem; text-align: center;">
-      <h2 style="font-size: 1.8rem; margin-bottom: 0.75rem; color: #fff;">Which project demonstrates superior execution?</h2>
+      <h2 style="font-size: 1.8rem; margin-bottom: 0.75rem; color: var(--text-primary);">Which project demonstrates superior execution?</h2>
       <p style="color: var(--text-secondary); font-size: 0.95rem;">
         Pairwise judging eliminates calibration variance by never asking for an absolute score.
         A global ranking is iteratively recovered via Hunter's MM Bradley-Terry estimator.
@@ -1476,7 +1476,7 @@ async function renderPairwise(container) {
       <div class="matchup-card">
         <div>
           <span class="tag" style="margin-bottom: 0.75rem; display: inline-block;">CANDIDATE ALPHA</span>
-          <h3 style="font-size: 1.5rem; color: #fff; margin-bottom: 0.5rem;">${pA.title}</h3>
+          <h3 style="font-size: 1.5rem; color: var(--text-primary); margin-bottom: 0.5rem;">${pA.title}</h3>
           <p style="color: var(--text-secondary); font-size: 0.92rem; line-height: 1.5;">${pA.summary}</p>
         </div>
         <div>
@@ -1494,7 +1494,7 @@ async function renderPairwise(container) {
       <div class="matchup-card">
         <div>
           <span class="tag" style="margin-bottom: 0.75rem; display: inline-block;">CANDIDATE BETA</span>
-          <h3 style="font-size: 1.5rem; color: #fff; margin-bottom: 0.5rem;">${pB.title}</h3>
+          <h3 style="font-size: 1.5rem; color: var(--text-primary); margin-bottom: 0.5rem;">${pB.title}</h3>
           <p style="color: var(--text-secondary); font-size: 0.92rem; line-height: 1.5;">${pB.summary}</p>
         </div>
         <div>
@@ -1601,7 +1601,7 @@ async function renderOrganizer(container) {
     <div style="background: var(--bg-surface-1); border: 1px solid var(--border-subtle); padding: 1.5rem; border-radius: var(--radius-xs); margin-bottom: 2.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem;">
       <div>
         <span class="tag" style="color: var(--accent-cyan); border-color: rgba(0,229,255,0.3); margin-bottom: 0.4rem; display: inline-block;">NORMALIZATION PROOF (+5)</span>
-        <h3 style="font-size: 1.3rem; color: #fff;">Cross-Judge Calibration Active</h3>
+        <h3 style="font-size: 1.3rem; color: var(--text-primary);">Cross-Judge Calibration Active</h3>
         <p style="color: var(--text-secondary); font-size: 0.88rem; max-width: 680px; margin-top: 0.25rem;">
           Raw Judge Variance: <code>${s.raw_variance || 0.45}</code> &rarr; Normalized Variance: <code>${s.normalized_variance || 0.18}</code>.
           Zero-variance judges stabilized: <code>${s.zero_variance_judges_stabilized || 2}</code>.
@@ -1619,7 +1619,7 @@ async function renderOrganizer(container) {
     <div style="display: grid; grid-template-columns: 380px 1fr; gap: 2rem; margin-bottom: 2.5rem;">
       <!-- Rubric Tuner -->
       <div class="form-card" style="margin: 0;">
-        <h4 style="color: #fff; margin-bottom: 1.25rem; font-size: 1.1rem;">Rubric Weighting Engine</h4>
+        <h4 style="color: var(--text-primary); margin-bottom: 1.25rem; font-size: 1.1rem;">Rubric Weighting Engine</h4>
         <form onsubmit="event.preventDefault(); updateWeightsHandler();">
           <div class="form-group">
             <label class="form-label">Functionality Weight</label>
@@ -1641,7 +1641,7 @@ async function renderOrganizer(container) {
 
       <!-- Judge Progress Matrix -->
       <div>
-        <h4 style="color: #fff; margin-bottom: 1.25rem; font-size: 1.1rem;">Judge Completion Matrix (${stats.judges.length} Judges)</h4>
+        <h4 style="color: var(--text-primary); margin-bottom: 1.25rem; font-size: 1.1rem;">Judge Completion Matrix (${stats.judges.length} Judges)</h4>
         <div class="data-table-container" style="max-height: 380px; overflow-y: auto;">
           <table class="data-table">
             <thead>
@@ -1659,7 +1659,7 @@ async function renderOrganizer(container) {
                 return `
                   <tr>
                     <td style="font-family: var(--font-mono);">${j.id}</td>
-                    <td style="font-weight: 600; color: #fff;">${j.name}</td>
+                    <td style="font-weight: 600; color: var(--text-primary);">${j.name}</td>
                     <td style="font-family: var(--font-mono); font-size: 0.75rem;">${j.tracks.join(", ") || 'General'}</td>
                     <td style="font-family: var(--font-mono); font-weight: 700;">${j.reviews_completed}</td>
                     <td><span style="color: ${badgeColor}; font-family: var(--font-mono); font-size: 0.75rem;">● ${j.status.toUpperCase()}</span></td>
@@ -1677,7 +1677,7 @@ async function renderOrganizer(container) {
       <!-- Algorithmic Judge Assignment -->
       <div class="form-card" style="margin: 0;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-          <h4 style="color: #fff; font-size: 1.1rem;">Algorithmic Assignment</h4>
+          <h4 style="color: var(--text-primary); font-size: 1.1rem;">Algorithmic Assignment</h4>
           <span class="tag" style="color:var(--accent-blue);">TRACK-AWARE MATCHING</span>
         </div>
         <p style="color:var(--text-secondary); font-size:0.85rem; margin-bottom:1.25rem;">
@@ -1695,7 +1695,7 @@ async function renderOrganizer(container) {
       <!-- Webhooks Dispatcher -->
       <div class="form-card" style="margin: 0;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-          <h4 style="color: #fff; font-size: 1.1rem;">Event Webhooks Dispatcher</h4>
+          <h4 style="color: var(--text-primary); font-size: 1.1rem;">Event Webhooks Dispatcher</h4>
           <span class="tag">${webhooks.length} Active</span>
         </div>
         <p style="color:var(--text-secondary); font-size:0.85rem; margin-bottom:1.25rem;">
@@ -1713,7 +1713,7 @@ async function renderOrganizer(container) {
 
     <!-- Cryptographic Audit Log -->
     <div>
-      <h4 style="color: #fff; margin-bottom: 1rem; font-size: 1.1rem;">Tamper-Evident SHA-256 Audit Chain</h4>
+      <h4 style="color: var(--text-primary); margin-bottom: 1rem; font-size: 1.1rem;">Tamper-Evident SHA-256 Audit Chain</h4>
       <div class="data-table-container">
         <table class="data-table">
           <thead>
@@ -1840,25 +1840,25 @@ async function renderDocs(container) {
     <div style="max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem;">
       <div class="gateway-card" style="padding: 1.5rem;">
         <span class="tag">GET /api/projects</span>
-        <h4 style="color:#fff; margin: 0.5rem 0;">Public Project Gallery</h4>
+        <h4 style="color:var(--text-primary); margin: 0.5rem 0;">Public Project Gallery</h4>
         <p style="color:var(--text-secondary); font-size:0.88rem;">Returns list of all projects with normalized scores, ranks, and delta rank.</p>
       </div>
 
       <div class="gateway-card" style="padding: 1.5rem;">
         <span class="tag">POST /projects/new</span>
-        <h4 style="color:#fff; margin: 0.5rem 0;">Submit Project (Deadline Enforced)</h4>
+        <h4 style="color:var(--text-primary); margin: 0.5rem 0;">Submit Project (Deadline Enforced)</h4>
         <p style="color:var(--text-secondary); font-size:0.88rem;">Creates submission. Returns 403 Forbidden if event deadline has passed.</p>
       </div>
 
       <div class="gateway-card" style="padding: 1.5rem;">
         <span class="tag">GET /api/judge/scores</span>
-        <h4 style="color:#fff; margin: 0.5rem 0;">Judge Scoring Sheet (Role Scoped)</h4>
+        <h4 style="color:var(--text-primary); margin: 0.5rem 0;">Judge Scoring Sheet (Role Scoped)</h4>
         <p style="color:var(--text-secondary); font-size:0.88rem;">Returns caller's own scores. Querying peer scores returns 403 Forbidden.</p>
       </div>
 
       <div class="gateway-card" style="padding: 1.5rem;">
         <span class="tag">GET /api/export.csv</span>
-        <h4 style="color:#fff; margin: 0.5rem 0;">Organizer CSV Streaming</h4>
+        <h4 style="color:var(--text-primary); margin: 0.5rem 0;">Organizer CSV Streaming</h4>
         <p style="color:var(--text-secondary); font-size:0.88rem;">Streams calibrated hackathon results in standard CSV format for organizers.</p>
       </div>
     </div>

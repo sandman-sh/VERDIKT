@@ -461,7 +461,7 @@ class PortalRequestHandler(BaseHTTPRequestHandler):
         if path in ("/projects/new", "/submit"):
             pre_html = """
             <section class="form-card">
-              <h2 style="color:#fff; margin-bottom: 1rem;">[ SUBMIT PROJECT ]</h2>
+              <h2 style="color:var(--text-primary); margin-bottom: 1rem;">[ SUBMIT PROJECT ]</h2>
               <p style="color:var(--accent-red);">Deadline enforcement active.</p>
             </section>
             """
